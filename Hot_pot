@@ -11,11 +11,11 @@ library(GenomicRanges) //load database GenomicRanges
 getwd() // print out current working directory
 setwd("../Desktop/") // change the working directory  
 gtf <- read.csv("transcripts.gtf", sep = "\t", header = FALSE) // load transcripts.gtf file as gtf, separate by tab
-transcripts <- gtf[gtf[,3] == "transcript",] // extract the transcripts gtf colomn 3
-transcriptsPositions <- transcripts[,c(1,4,5)]
+transcripts <- gtf[gtf[,3] == "transcript",] // extract the rows contaning transcript in coloum 3 save it as transcripts
+transcriptsPositions <- transcripts[,c(1,4,5)] // extract the 1,4,5 columns from transcripts
 colnames(transcriptsPositions) <- c("chr", "start", "end") // add colnames to the transcriptsPositions
 transcriptsPositions <- makeGRangesFromDataFrame(transcriptsPositions) //set the ranges 
-query <- data.frame(chr="chr1", start=83857, end=85317)
+query <- data.frame(chr="chr1", start=83857, end=85317) // set the query position
 query <- makeGRangesFromDataFrame(query)
 transcripts[which.min(distance(x = query, transcriptsPositions)),] // print out the minimal distance between query and the transcriptsPositions
 
