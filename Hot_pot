@@ -1,0 +1,21 @@
+# extract a colomn from a txt file
+read.csv("../Desktop/mwMary2.txt") 
+read.csv("../Desktop/mwMary2.txt", sep="\t" or " ") //separate the colomn with the tab; or space
+input <-read.csv("../Desktop/mwMary2.txt", sep=" ") // input the file to R
+input[,1] //print out the first column
+# search for intron presence in a certain chromosome range using transcription gtf file
+source("https://bioconductor.org/biocLite.R")
+biocLite()
+biocLite(c("GenomicFeatures", "AnnotationDbi"))
+library(GenomicRanges) //load database GenomicRanges
+getwd() // print out current working directory
+setwd("../Desktop/") // change the working directory  
+gtf <- read.csv("transcripts.gtf", sep = "\t", header = FALSE) // load transcripts.gtf file as gtf, separate by tab
+transcripts <- gtf[gtf[,3] == "transcript",] // extract the transcripts gtf colomn 3
+transcriptsPositions <- transcripts[,c(1,4,5)]
+colnames(transcriptsPositions) <- c("chr", "start", "end") // add colnames to the transcriptsPositions
+transcriptsPositions <- makeGRangesFromDataFrame(transcriptsPositions) //set the ranges 
+query <- data.frame(chr="chr1", start=83857, end=85317)
+query <- makeGRangesFromDataFrame(query)
+transcripts[which.min(distance(x = query, transcriptsPositions)),] // print out the minimal distance between query and the transcriptsPositions
+
