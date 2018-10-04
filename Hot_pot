@@ -19,3 +19,11 @@ query <- data.frame(chr="chr1", start=83857, end=85317) // set the query positio
 query <- makeGRangesFromDataFrame(query)
 transcripts[which.min(distance(x = query, transcriptsPositions)),] // print out the minimal distance between query and the transcriptsPositions
 
+# in a matching operation, for example extract the rows consisting of certain geneIDs. Those fixed geneIDs maybe in an txt file.
+# one problem is that when the geneIDs has space "110 ", it cannot match with the gene ID "110", resulting the false output. 
+# Daniel helps me to solve this problem.
+ page2 <- readLines("1130 conserved genes.txt")// by reading lines you can see the space that didn't shown earlier, for example "II2479 " 
+ page2 <- gsub("[[:space:]]+","",page2) // getting rid of the spaces between" ". 
+ page1$Prot_ID %in% as.vector(page2) // check whether the ID in page2  is present in page1
+ table(page1$Prot_ID %in% as.vector(page2)) // summarize how many false and true
+
